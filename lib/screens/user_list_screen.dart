@@ -15,11 +15,12 @@ class UserListScreen extends StatefulWidget {
 class _UserListScreenState extends State<UserListScreen> {
   List<User> users = [];
   List<User> visibleUsers = [];
-  int itemsPerPage = 5; 
-  int currentPage = 0; 
+  int itemsPerPage = 5;
+  int currentPage = 0;
   bool isLoading = true;
   String? error;
-  String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjhkNmU0MDcwODhlZWZhZmI0MDRhNiIsInVzZXJfcm9sZSI6IkFkbWluIiwiaWF0IjoxNzMyMzM3OTQ0LCJleHAiOjE3MzI5NDI3NDR9.oRBtJEMRA-TzdQ7MmjhX-bfLMwWwiUDaWoQPQokFC5k'; 
+  String token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjhkNmU0MDcwODhlZWZhZmI0MDRhNiIsInVzZXJfcm9sZSI6IkFkbWluIiwiaWF0IjoxNzMyMzM3OTQ0LCJleHAiOjE3MzI5NDI3NDR9.oRBtJEMRA-TzdQ7MmjhX-bfLMwWwiUDaWoQPQokFC5k';
 
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
@@ -29,7 +30,7 @@ class _UserListScreenState extends State<UserListScreen> {
   final _roleController = TextEditingController();
   final _passwordController = TextEditingController();
   String? _selectedImagePath;
-  String _selectedRole = 'User'; 
+  String _selectedRole = 'User';
   final List<String> _roles = ['Admin', 'User', 'Renter'];
 
   void _showAddUserDialog() {
@@ -195,7 +196,7 @@ class _UserListScreenState extends State<UserListScreen> {
     _phoneController.text = user.phone;
     _addressController.text = user.address;
     _selectedImagePath = null;
-    _passwordController.clear(); 
+    _passwordController.clear();
 
     showDialog(
       context: context,
@@ -315,7 +316,7 @@ class _UserListScreenState extends State<UserListScreen> {
                   final response = await request.send();
                   if (response.statusCode == 200) {
                     Navigator.pop(context);
-                    fetchUsers(); 
+                    fetchUsers();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Cập nhật thành công')),
                     );
@@ -405,9 +406,10 @@ class _UserListScreenState extends State<UserListScreen> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.26.1:5000/api/auth/users'),
+        Uri.parse('https://be-android-project.onrender.com/api/auth/users'),
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token', // Thêm Bearer token
         },
       );
 
@@ -416,8 +418,8 @@ class _UserListScreenState extends State<UserListScreen> {
         setState(() {
           users = data.map((json) => User.fromJson(json)).toList();
           isLoading = false;
-          currentPage = 0; 
-          updateVisibleUsers(); 
+          currentPage = 0;
+          updateVisibleUsers();
         });
       } else {
         setState(() {

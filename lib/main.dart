@@ -1,3 +1,5 @@
+import 'package:admin/screens/notification_list_screen.dart';
+import 'package:admin/screens/report_list_screen.dart';
 import 'package:admin/screens/user_list_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -62,14 +64,21 @@ class MyHomePage extends StatelessWidget {
               leading: Icon(Icons.notifications),
               title: Text('Quản lý Thông báo'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NotificationListScreen()),
+                );
               },
             ),
             ListTile(
               leading: Icon(Icons.report),
               title: Text('Quản lý Report'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ReportListScreen()),
+                );
               },
             ),
           ],
