@@ -163,7 +163,7 @@ class _UserListScreenState extends State<UserListScreen> {
 
                 try {
                   final response = await request.send();
-                  if (response.statusCode == 201) {
+                  if (response.statusCode == 200) {
                     Navigator.pop(context);
                     fetchUsers();
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -174,8 +174,11 @@ class _UserListScreenState extends State<UserListScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Có lỗi xảy ra')),
                     );
+                    print('Error response: ${response.statusCode}');
                   }
                 } catch (e) {
+                  print('Exception occurred: $e');
+                  print('Stack trace: ${StackTrace.current}');
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Có lỗi xảy ra')),
                   );
