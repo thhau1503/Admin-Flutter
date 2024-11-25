@@ -17,4 +17,14 @@ class User {
         address = json['address'],
         isOnline = json['isOnline'],
         avatarUrl = json['avatar']['url'];
+
+  User.fromJsonCustom(Map<String, dynamic> json)
+      : id = json['_id'],
+        username = json['username'],
+        email = json['email'],
+        phone = json['phone'],
+        avatarUrl = json['avatar']['url'],
+        userRole = "",
+        address = '', // Initialize address//+
+        isOnline = false; 
 }
