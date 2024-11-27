@@ -14,7 +14,8 @@ class LoginScreen extends StatelessWidget {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
-    const String apiUrl = "https://be-android-project.onrender.com/api/auth/login"; 
+    const String apiUrl =
+        "https://be-android-project.onrender.com/api/auth/login";
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -27,14 +28,18 @@ class LoginScreen extends StatelessWidget {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
 
-        String token = data['data']['token']; 
+        String token = data['data']['token'];
         print(token);
 
         await storage.write(key: "token", value: token);
 
-        Navigator.pushReplacementNamed(context, MaterialPageRoute(builder: (context) => HomePage()),);
+        Navigator.pushReplacementNamed(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()) as String,
+        );
       } else {
-        final errorMessage = jsonDecode(response.body)['message'] ?? 'Đăng nhập thất bại';
+        final errorMessage =
+            jsonDecode(response.body)['message'] ?? 'Đăng nhập thất bại';
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(errorMessage)),
         );

@@ -2,8 +2,8 @@ import 'package:admin/models/report_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final storage = FlutterSecureStorage();
 
@@ -23,6 +23,9 @@ class _ReportListScreenState extends State<ReportListScreen> {
   bool isLoading = true;
   String? error;
 
+  String token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjhkNmU0MDcwODhlZWZhZmI0MDRhNiIsInVzZXJfcm9sZSI6IkFkbWluIiwiaWF0IjoxNzMyMzM3OTQ0LCJleHAiOjE3MzI5NDI3NDR9.oRBtJEMRA-TzdQ7MmjhX-bfLMwWwiUDaWoQPQokFC5k';
+
   @override
   void initState() {
     super.initState();
@@ -36,6 +39,7 @@ class _ReportListScreenState extends State<ReportListScreen> {
     });
     try {
       final token = await getAuthToken();
+
       final response = await http.get(
         Uri.parse('https://be-android-project.onrender.com/api/report/getAll'),
         headers: {
@@ -67,6 +71,7 @@ class _ReportListScreenState extends State<ReportListScreen> {
   Future<void> updateReportStatus(String id, String status) async {
     try {
       final token = await getAuthToken();
+
       final response = await http.patch(
         Uri.parse(
             'https://be-android-project.onrender.com/api/report/$id/status/$status'),
@@ -93,6 +98,7 @@ class _ReportListScreenState extends State<ReportListScreen> {
   Future<void> deleteReport(String id) async {
     try {
       final token = await getAuthToken();
+
       final response = await http.delete(
         Uri.parse(
             'https://be-android-project.onrender.com/api/report/delete/$id'),

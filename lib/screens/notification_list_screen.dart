@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:admin/models/notification_model.dart' as admin_model;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-
 final storage = FlutterSecureStorage();
 
 Future<String?> getAuthToken() async {
@@ -24,6 +23,8 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
   bool isLoading = true;
   String? error;
   String selectedUserId = "";
+  String token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjhkNmU0MDcwODhlZWZhZmI0MDRhNiIsInVzZXJfcm9sZSI6IkFkbWluIiwiaWF0IjoxNzMyMzM3OTQ0LCJleHAiOjE3MzI5NDI3NDR9.oRBtJEMRA-TzdQ7MmjhX-bfLMwWwiUDaWoQPQokFC5k';
 
   @override
   void initState() {

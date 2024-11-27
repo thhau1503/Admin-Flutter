@@ -25,6 +25,6 @@ class User {
         phone = json['phone'],
         avatarUrl = json['avatar']['url'],
         userRole = "",
-        address = '', // Initialize address//+
-        isOnline = false; 
+        address = '',
+        isOnline = false;
 }

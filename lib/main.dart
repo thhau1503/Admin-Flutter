@@ -1,4 +1,5 @@
 import 'package:admin/screens/notification_list_screen.dart';
+
 import 'package:admin/screens/post_list_screen.dart';
 import 'package:admin/screens/report_list_screen.dart';
 import 'package:admin/screens/user_list_screen.dart';
@@ -85,17 +86,17 @@ class LoginScreen extends StatelessWidget {
           token = responseData['accessToken'];
         }
 
-
         if (token != null) {
           await storage.write(key: "authToken", value: token);
-          
+
           Navigator.of(context)
               .pushNamedAndRemoveUntil('/home', (route) => false);
         } else {
           throw Exception('Token not found in response');
         }
       } else {
-        final errorMessage = jsonDecode(response.body)['message'] ?? 'Đăng nhập thất bại';
+        final errorMessage =
+            jsonDecode(response.body)['message'] ?? 'Đăng nhập thất bại';
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(errorMessage)),
         );
