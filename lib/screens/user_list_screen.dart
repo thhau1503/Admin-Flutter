@@ -10,14 +10,12 @@ import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 
 final storage = FlutterSecureStorage();
-
 Future<String?> getAuthToken() async {
   return await storage.read(key: "authToken");
 }
 
 class UserListScreen extends StatefulWidget {
   const UserListScreen({Key? key}) : super(key: key);
-
   @override
   _UserListScreenState createState() => _UserListScreenState();
 }
@@ -29,12 +27,8 @@ class _UserListScreenState extends State<UserListScreen> {
   int currentPage = 0;
   bool isLoading = true;
   String? error;
-<<<<<<< HEAD
   String token =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjhkNmU0MDcwODhlZWZhZmI0MDRhNiIsInVzZXJfcm9sZSI6IkFkbWluIiwiaWF0IjoxNzMyMzM3OTQ0LCJleHAiOjE3MzI5NDI3NDR9.oRBtJEMRA-TzdQ7MmjhX-bfLMwWwiUDaWoQPQokFC5k';
-=======
->>>>>>> main
-
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -45,7 +39,6 @@ class _UserListScreenState extends State<UserListScreen> {
   String? _selectedImagePath;
   String _selectedRole = 'User';
   final List<String> _roles = ['Admin', 'User', 'Renter'];
-
   void _showAddUserDialog() {
     _usernameController.clear();
     _passwordController.clear();
@@ -54,7 +47,6 @@ class _UserListScreenState extends State<UserListScreen> {
     _addressController.clear();
     _selectedImagePath = null;
     _selectedRole = 'User';
-
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -179,14 +171,12 @@ class _UserListScreenState extends State<UserListScreen> {
                   'Authorization': 'Bearer $token',
                   'Content-Type': 'multipart/form-data'
                 });
-
                 request.fields['username'] = _usernameController.text;
                 request.fields['password'] = _passwordController.text;
                 request.fields['email'] = _emailController.text;
                 request.fields['phone'] = _phoneController.text;
                 request.fields['address'] = _addressController.text;
                 request.fields['user_role'] = _selectedRole;
-
                 if (_selectedImagePath != null) {
                   final mimeType = lookupMimeType(_selectedImagePath!);
                   if (mimeType != null) {
@@ -470,11 +460,7 @@ class _UserListScreenState extends State<UserListScreen> {
         Uri.parse('https://be-android-project.onrender.com/api/auth/users'),
         headers: {
           'Content-Type': 'application/json',
-<<<<<<< HEAD
           'Authorization': 'Bearer $token', // Thêm Bearer token
-=======
-          'Authorization': 'Bearer $token',
->>>>>>> main
         },
       );
 

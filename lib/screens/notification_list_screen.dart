@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:admin/models/notification_model.dart' as admin_model;
-<<<<<<< HEAD
-=======
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 
 final storage = FlutterSecureStorage();
 
 Future<String?> getAuthToken() async {
   return await storage.read(key: "authToken");
 }
->>>>>>> main
 
 class NotificationListScreen extends StatefulWidget {
   const NotificationListScreen({Key? key}) : super(key: key);
@@ -27,11 +23,8 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
   bool isLoading = true;
   String? error;
   String selectedUserId = "";
-<<<<<<< HEAD
   String token =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjhkNmU0MDcwODhlZWZhZmI0MDRhNiIsInVzZXJfcm9sZSI6IkFkbWluIiwiaWF0IjoxNzMyMzM3OTQ0LCJleHAiOjE3MzI5NDI3NDR9.oRBtJEMRA-TzdQ7MmjhX-bfLMwWwiUDaWoQPQokFC5k';
-=======
->>>>>>> main
 
   @override
   void initState() {
@@ -46,10 +39,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
       error = null;
     });
     try {
-<<<<<<< HEAD
-=======
       final token = await getAuthToken();
->>>>>>> main
       final response = await http.get(
         Uri.parse('https://be-android-project.onrender.com/api/notification'),
         headers: {
@@ -82,10 +72,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
 
   Future<void> fetchUsers() async {
     try {
-<<<<<<< HEAD
-=======
       final token = await getAuthToken();
->>>>>>> main
       final response = await http.get(
         Uri.parse('https://be-android-project.onrender.com/api/auth/users'),
         headers: {
@@ -119,10 +106,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
   Future<void> updateNotification(
       String id, String message, String userId, String createdAt) async {
     try {
-<<<<<<< HEAD
-=======
       final token = await getAuthToken();
->>>>>>> main
       final response = await http.put(
         Uri.parse(
             'https://be-android-project.onrender.com/api/notification/$id'),
@@ -156,10 +140,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
 
   Future<void> deleteNotification(String id) async {
     try {
-<<<<<<< HEAD
-=======
       final token = await getAuthToken();
->>>>>>> main
       final response = await http.delete(
         Uri.parse(
             'https://be-android-project.onrender.com/api/notification/$id'),
@@ -189,10 +170,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
   Future<void> addNotification(
       String message, String userId, String createdAt) async {
     try {
-<<<<<<< HEAD
-=======
       final token = await getAuthToken();
->>>>>>> main
       final response = await http.post(
         Uri.parse(
             'https://be-android-project.onrender.com/api/notification/create'),
