@@ -1,9 +1,19 @@
 import 'package:admin/models/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as p;
+import 'package:mime/mime.dart';
+import 'package:http_parser/http_parser.dart';
+
+final storage = FlutterSecureStorage();
+
+Future<String?> getAuthToken() async {
+  return await storage.read(key: "authToken");
+}
 
 class UserListScreen extends StatefulWidget {
   const UserListScreen({Key? key}) : super(key: key);
@@ -19,8 +29,11 @@ class _UserListScreenState extends State<UserListScreen> {
   int currentPage = 0;
   bool isLoading = true;
   String? error;
+<<<<<<< HEAD
   String token =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjhkNmU0MDcwODhlZWZhZmI0MDRhNiIsInVzZXJfcm9sZSI6IkFkbWluIiwiaWF0IjoxNzMyMzM3OTQ0LCJleHAiOjE3MzI5NDI3NDR9.oRBtJEMRA-TzdQ7MmjhX-bfLMwWwiUDaWoQPQokFC5k';
+=======
+>>>>>>> main
 
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
@@ -55,12 +68,25 @@ class _UserListScreenState extends State<UserListScreen> {
                 GestureDetector(
                   onTap: () async {
                     final ImagePicker picker = ImagePicker();
-                    final XFile? image =
-                        await picker.pickImage(source: ImageSource.gallery);
+                    final XFile? image = await picker.pickImage(
+                      source: ImageSource.gallery,
+                      maxWidth: 1024,
+                      maxHeight: 1024,
+                    );
                     if (image != null) {
-                      setState(() {
-                        _selectedImagePath = image.path;
-                      });
+                      final mimeType = lookupMimeType(image.path);
+                      if (mimeType?.startsWith('image/') ?? false) {
+                        setState(() {
+                          _selectedImagePath = image.path;
+                        });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                                'Vui lòng chọn file ảnh có định dạng hợp lệ (JPG, JPEG, PNG).'),
+                          ),
+                        );
+                      }
                     }
                   },
                   child: Container(
@@ -78,7 +104,7 @@ class _UserListScreenState extends State<UserListScreen> {
                               fit: BoxFit.cover,
                             ),
                           )
-                        : Icon(Icons.add_photo_alternate, size: 40),
+                        : const Icon(Icons.add_photo_alternate, size: 40),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -141,12 +167,18 @@ class _UserListScreenState extends State<UserListScreen> {
           ),
           ElevatedButton(
             onPressed: () async {
+              final token = await getAuthToken();
               if (_formKey.currentState?.validate() ?? false) {
                 var request = http.MultipartRequest(
                   'POST',
                   Uri.parse(
-                      'http://192.168.26.1:5000/api/auth/admin/create-user'),
+                      'https://be-android-project.onrender.com/api/auth/admin/create-user'),
                 );
+
+                request.headers.addAll({
+                  'Authorization': 'Bearer $token',
+                  'Content-Type': 'multipart/form-data'
+                });
 
                 request.fields['username'] = _usernameController.text;
                 request.fields['password'] = _passwordController.text;
@@ -156,15 +188,20 @@ class _UserListScreenState extends State<UserListScreen> {
                 request.fields['user_role'] = _selectedRole;
 
                 if (_selectedImagePath != null) {
-                  request.files.add(await http.MultipartFile.fromPath(
-                    'avatar',
-                    _selectedImagePath!,
-                  ));
+                  final mimeType = lookupMimeType(_selectedImagePath!);
+                  if (mimeType != null) {
+                    final mimeParts = mimeType.split('/');
+                    request.files.add(await http.MultipartFile.fromPath(
+                      'avatar',
+                      _selectedImagePath!,
+                      contentType: MediaType(mimeParts[0], mimeParts[1]),
+                    ));
+                  }
                 }
 
                 try {
                   final response = await request.send();
-                  if (response.statusCode == 201) {
+                  if (response.statusCode == 200) {
                     Navigator.pop(context);
                     fetchUsers();
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -175,8 +212,11 @@ class _UserListScreenState extends State<UserListScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Có lỗi xảy ra')),
                     );
+                    print('Error response: ${response.statusCode}');
                   }
                 } catch (e) {
+                  print('Exception occurred: $e');
+                  print('Stack trace: ${StackTrace.current}');
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Có lỗi xảy ra')),
                   );
@@ -211,12 +251,22 @@ class _UserListScreenState extends State<UserListScreen> {
                 GestureDetector(
                   onTap: () async {
                     final ImagePicker picker = ImagePicker();
-                    final XFile? image =
-                        await picker.pickImage(source: ImageSource.gallery);
+                    final XFile? image = await picker.pickImage(
+                      source: ImageSource.gallery,
+                    );
                     if (image != null) {
-                      setState(() {
-                        _selectedImagePath = image.path;
-                      });
+                      final mimeType = lookupMimeType(image.path);
+                      if (mimeType?.startsWith('image/') ?? false) {
+                        setState(() {
+                          _selectedImagePath = image.path;
+                        });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Vui lòng chọn một tệp ảnh hợp lệ.'),
+                          ),
+                        );
+                      }
                     }
                   },
                   child: Container(
@@ -240,7 +290,7 @@ class _UserListScreenState extends State<UserListScreen> {
                               user.avatarUrl,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) =>
-                                  Icon(Icons.person),
+                                  const Icon(Icons.person),
                             ),
                           ),
                   ),
@@ -294,8 +344,11 @@ class _UserListScreenState extends State<UserListScreen> {
                   var request = http.MultipartRequest(
                     'PUT',
                     Uri.parse(
-                        'http://192.168.26.1:5000/api/auth/users/${user.id}'),
+                        'https://be-android-project.onrender.com/api/auth/users/${user.id}'),
                   );
+
+                  request.headers
+                      .addAll({'Content-Type': 'multipart/form-data'});
 
                   request.fields['username'] = _usernameController.text;
                   request.fields['email'] = _emailController.text;
@@ -307,10 +360,15 @@ class _UserListScreenState extends State<UserListScreen> {
                   }
 
                   if (_selectedImagePath != null) {
-                    request.files.add(await http.MultipartFile.fromPath(
-                      'avatar',
-                      _selectedImagePath!,
-                    ));
+                    final mimeType = lookupMimeType(_selectedImagePath!);
+                    if (mimeType != null) {
+                      final mimeParts = mimeType.split('/');
+                      request.files.add(await http.MultipartFile.fromPath(
+                        'avatar',
+                        _selectedImagePath!,
+                        contentType: MediaType(mimeParts[0], mimeParts[1]),
+                      ));
+                    }
                   }
 
                   final response = await request.send();
@@ -352,10 +410,11 @@ class _UserListScreenState extends State<UserListScreen> {
           ),
           ElevatedButton(
             onPressed: () async {
+              final token = await getAuthToken();
               try {
                 final response = await http.delete(
                   Uri.parse(
-                      'http://192.168.26.1:5000/api/auth/user/${user.id}'),
+                      'https://be-android-project.onrender.com/api/auth/user/${user.id}'),
                   headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer $token',
@@ -405,11 +464,17 @@ class _UserListScreenState extends State<UserListScreen> {
     });
 
     try {
+      final token = await getAuthToken();
+      print(token);
       final response = await http.get(
         Uri.parse('https://be-android-project.onrender.com/api/auth/users'),
         headers: {
           'Content-Type': 'application/json',
+<<<<<<< HEAD
           'Authorization': 'Bearer $token', // Thêm Bearer token
+=======
+          'Authorization': 'Bearer $token',
+>>>>>>> main
         },
       );
 

@@ -2,6 +2,17 @@ import 'package:admin/models/report_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+<<<<<<< HEAD
+=======
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+
+final storage = FlutterSecureStorage();
+
+Future<String?> getAuthToken() async {
+  return await storage.read(key: "authToken");
+}
+>>>>>>> main
 
 class ReportListScreen extends StatefulWidget {
   const ReportListScreen({Key? key}) : super(key: key);
@@ -14,8 +25,11 @@ class _ReportListScreenState extends State<ReportListScreen> {
   List<Report> Reports = [];
   bool isLoading = true;
   String? error;
+<<<<<<< HEAD
   String token =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjhkNmU0MDcwODhlZWZhZmI0MDRhNiIsInVzZXJfcm9sZSI6IkFkbWluIiwiaWF0IjoxNzMyMzM3OTQ0LCJleHAiOjE3MzI5NDI3NDR9.oRBtJEMRA-TzdQ7MmjhX-bfLMwWwiUDaWoQPQokFC5k';
+=======
+>>>>>>> main
 
   @override
   void initState() {
@@ -29,6 +43,10 @@ class _ReportListScreenState extends State<ReportListScreen> {
       error = null;
     });
     try {
+<<<<<<< HEAD
+=======
+      final token = await getAuthToken();
+>>>>>>> main
       final response = await http.get(
         Uri.parse('https://be-android-project.onrender.com/api/report/getAll'),
         headers: {
@@ -59,6 +77,10 @@ class _ReportListScreenState extends State<ReportListScreen> {
 
   Future<void> updateReportStatus(String id, String status) async {
     try {
+<<<<<<< HEAD
+=======
+      final token = await getAuthToken();
+>>>>>>> main
       final response = await http.patch(
         Uri.parse(
             'https://be-android-project.onrender.com/api/report/$id/status/$status'),
@@ -84,6 +106,10 @@ class _ReportListScreenState extends State<ReportListScreen> {
 
   Future<void> deleteReport(String id) async {
     try {
+<<<<<<< HEAD
+=======
+      final token = await getAuthToken();
+>>>>>>> main
       final response = await http.delete(
         Uri.parse(
             'https://be-android-project.onrender.com/api/report/delete/$id'),

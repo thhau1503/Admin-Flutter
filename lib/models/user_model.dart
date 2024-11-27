@@ -26,5 +26,10 @@ class User {
         avatarUrl = json['avatar']['url'],
         userRole = "",
         address = '', // Initialize address//+
+<<<<<<< HEAD
         isOnline = false; // Initialize isOnline//+
 }
+=======
+        isOnline = false; 
+}
+>>>>>>> main
