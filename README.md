@@ -30,13 +30,15 @@ Clone dự án từ repository:
 
 cd folder-name
 
-## Bật máy ảo hoặc kết nối thiết bi android hay ios thông qua android studio
+### 🚀 Các bước hưỡng dẫn chạy chương trình
 
-# chọn pub package mỗi lần chạy chương trình
+- Bật máy ảo hoặc kết nối thiết bi android hay ios thông qua android studio
 
-# vào thư mục lib -> main.dart và chọn startDebugging
+- chọn pub package mỗi lần chạy chương trình
 
-# chọn thiết bị chạy chương trình ở thanh công cụ phía dưới vsCode.
+- vào thư mục lib -> main.dart và chọn startDebugging
+
+- chọn thiết bị chạy chương trình ở thanh công cụ phía dưới vsCode.
 
 ⚡ Lưu Ý
 Hãy thêm đường dẫn bin của package Flutter vào environmentalPath.
