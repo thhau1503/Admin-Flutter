@@ -52,307 +52,136 @@ class _UserListScreenState extends State<UserListScreen> {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Thêm người dùng mới'),
-        content: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  onTap: () async {
-                    final ImagePicker picker = ImagePicker();
-                    final XFile? image = await picker.pickImage(
-                      source: ImageSource.gallery,
-                      maxWidth: 1024,
-                      maxHeight: 1024,
-                    );
-                    if (image != null) {
-                      final mimeType = lookupMimeType(image.path);
-                      if (mimeType?.startsWith('image/') ?? false) {
-                        setState(() {
-                          _selectedImagePath = image.path;
-                        });
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'Vui lòng chọn file ảnh có định dạng hợp lệ (JPG, JPEG, PNG).'),
-                          ),
-                        );
-                      }
-                    }
-                  },
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: _selectedImagePath != null
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.file(
-                              File(_selectedImagePath!),
-                              fit: BoxFit.cover,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: const Text('Thêm người dùng mới'),
+          content: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      final ImagePicker picker = ImagePicker();
+                      final XFile? image = await picker.pickImage(
+                        source: ImageSource.gallery,
+                        maxWidth: 1024,
+                        maxHeight: 1024,
+                      );
+                      if (image != null) {
+                        final mimeType = lookupMimeType(image.path);
+                        if (mimeType?.startsWith('image/') ?? false) {
+                          setState(() {
+                            _selectedImagePath = image.path;
+                          });
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                  'Vui lòng chọn file ảnh có định dạng hợp lệ (JPG, JPEG, PNG).'),
                             ),
-                          )
-                        : const Icon(Icons.add_photo_alternate, size: 40),
+                          );
+                        }
+                      }
+                    },
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: _selectedImagePath != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Image.file(
+                                File(_selectedImagePath!),
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : const Icon(Icons.add_photo_alternate, size: 40),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: const InputDecoration(labelText: 'Username'),
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? 'Không được để trống' : null,
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? 'Không được để trống' : null,
-                ),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? 'Không được để trống' : null,
-                ),
-                TextFormField(
-                  controller: _phoneController,
-                  decoration: const InputDecoration(labelText: 'Phone'),
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? 'Không được để trống' : null,
-                ),
-                TextFormField(
-                  controller: _addressController,
-                  decoration: const InputDecoration(labelText: 'Address'),
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? 'Không được để trống' : null,
-                ),
-                DropdownButtonFormField<String>(
-                  value: _selectedRole,
-                  decoration: const InputDecoration(labelText: 'Role'),
-                  items: _roles.map((String role) {
-                    return DropdownMenuItem(
-                      value: role,
-                      child: Text(role),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedRole = newValue!;
-                    });
-                  },
-                  validator: (value) =>
-                      value == null ? 'Vui lòng chọn role' : null,
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(labelText: 'Username'),
+                    validator: (value) =>
+                        value?.isEmpty ?? true ? 'Không được để trống' : null,
+                  ),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(labelText: 'Password'),
+                    obscureText: true,
+                    validator: (value) =>
+                        value?.isEmpty ?? true ? 'Không được để trống' : null,
+                  ),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(labelText: 'Email'),
+                    validator: (value) =>
+                        value?.isEmpty ?? true ? 'Không được để trống' : null,
+                  ),
+                  TextFormField(
+                    controller: _phoneController,
+                    decoration: const InputDecoration(labelText: 'Phone'),
+                    validator: (value) =>
+                        value?.isEmpty ?? true ? 'Không được để trống' : null,
+                  ),
+                  TextFormField(
+                    controller: _addressController,
+                    decoration: const InputDecoration(labelText: 'Address'),
+                    validator: (value) =>
+                        value?.isEmpty ?? true ? 'Không được để trống' : null,
+                  ),
+                  DropdownButtonFormField<String>(
+                    value: _selectedRole,
+                    decoration: const InputDecoration(labelText: 'Role'),
+                    items: _roles.map((String role) {
+                      return DropdownMenuItem(
+                        value: role,
+                        child: Text(role),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedRole = newValue!;
+                      });
+                    },
+                    validator: (value) =>
+                        value == null ? 'Vui lòng chọn role' : null,
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Hủy'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final token = await getAuthToken();
-              if (_formKey.currentState?.validate() ?? false) {
-                var request = http.MultipartRequest(
-                  'POST',
-                  Uri.parse(
-                      'https://be-android-project.onrender.com/api/auth/admin/create-user'),
-                );
-
-                request.headers.addAll({
-                  'Authorization': 'Bearer $token',
-                  'Content-Type': 'multipart/form-data'
-                });
-
-                request.fields['username'] = _usernameController.text;
-                request.fields['password'] = _passwordController.text;
-                request.fields['email'] = _emailController.text;
-                request.fields['phone'] = _phoneController.text;
-                request.fields['address'] = _addressController.text;
-                request.fields['user_role'] = _selectedRole;
-
-                if (_selectedImagePath != null) {
-                  final mimeType = lookupMimeType(_selectedImagePath!);
-                  if (mimeType != null) {
-                    final mimeParts = mimeType.split('/');
-                    request.files.add(await http.MultipartFile.fromPath(
-                      'avatar',
-                      _selectedImagePath!,
-                      contentType: MediaType(mimeParts[0], mimeParts[1]),
-                    ));
-                  }
-                }
-
-                try {
-                  final response = await request.send();
-                  if (response.statusCode == 200) {
-                    Navigator.pop(context);
-                    fetchUsers();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Tạo người dùng thành công')),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Có lỗi xảy ra')),
-                    );
-                    print('Error response: ${response.statusCode}');
-                  }
-                } catch (e) {
-                  print('Exception occurred: $e');
-                  print('Stack trace: ${StackTrace.current}');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Có lỗi xảy ra')),
-                  );
-                }
-              }
-            },
-            child: const Text('Thêm'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showEditUserDialog(User user) {
-    _usernameController.text = user.username;
-    _emailController.text = user.email;
-    _phoneController.text = user.phone;
-    _addressController.text = user.address;
-    _selectedImagePath = null;
-    _passwordController.clear();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Sửa thông tin người dùng'),
-        content: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  onTap: () async {
-                    final ImagePicker picker = ImagePicker();
-                    final XFile? image = await picker.pickImage(
-                      source: ImageSource.gallery,
-                    );
-                    if (image != null) {
-                      final mimeType = lookupMimeType(image.path);
-                      if (mimeType?.startsWith('image/') ?? false) {
-                        setState(() {
-                          _selectedImagePath = image.path;
-                        });
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Vui lòng chọn một tệp ảnh hợp lệ.'),
-                          ),
-                        );
-                      }
-                    }
-                  },
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: _selectedImagePath != null
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.file(
-                              File(_selectedImagePath!),
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.network(
-                              user.avatarUrl,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(Icons.person),
-                            ),
-                          ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: const InputDecoration(labelText: 'Username'),
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? 'Required' : null,
-                ),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? 'Required' : null,
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    helperText: 'Leave blank to keep current password',
-                  ),
-                  obscureText: true,
-                ),
-                TextFormField(
-                  controller: _phoneController,
-                  decoration: const InputDecoration(labelText: 'Phone'),
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? 'Required' : null,
-                ),
-                TextFormField(
-                  controller: _addressController,
-                  decoration: const InputDecoration(labelText: 'Address'),
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? 'Required' : null,
-                ),
-              ],
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Hủy'),
             ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Hủy'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              if (_formKey.currentState?.validate() ?? false) {
-                try {
+            ElevatedButton(
+              onPressed: () async {
+                final token = await getAuthToken();
+                if (_formKey.currentState?.validate() ?? false) {
                   var request = http.MultipartRequest(
-                    'PUT',
+                    'POST',
                     Uri.parse(
-                        'https://be-android-project.onrender.com/api/auth/users/${user.id}'),
+                        'https://be-android-project.onrender.com/api/auth/admin/create-user'),
                   );
 
-                  request.headers
-                      .addAll({'Content-Type': 'multipart/form-data'});
+                  request.headers.addAll({
+                    'Authorization': 'Bearer $token',
+                    'Content-Type': 'multipart/form-data'
+                  });
 
                   request.fields['username'] = _usernameController.text;
+                  request.fields['password'] = _passwordController.text;
                   request.fields['email'] = _emailController.text;
                   request.fields['phone'] = _phoneController.text;
                   request.fields['address'] = _addressController.text;
-
-                  if (_passwordController.text.isNotEmpty) {
-                    request.fields['password'] = _passwordController.text;
-                  }
+                  request.fields['user_role'] = _selectedRole;
 
                   if (_selectedImagePath != null) {
                     final mimeType = lookupMimeType(_selectedImagePath!);
@@ -366,28 +195,203 @@ class _UserListScreenState extends State<UserListScreen> {
                     }
                   }
 
-                  final response = await request.send();
-                  if (response.statusCode == 200) {
-                    Navigator.pop(context);
-                    fetchUsers();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Cập nhật thành công')),
-                    );
-                  } else {
+                  try {
+                    final response = await request.send();
+                    if (response.statusCode == 200) {
+                      Navigator.pop(context);
+                      fetchUsers();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('Tạo người dùng thành công')),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Có lỗi xảy ra')),
+                      );
+                      print('Error response: ${response.statusCode}');
+                    }
+                  } catch (e) {
+                    print('Exception occurred: $e');
+                    print('Stack trace: ${StackTrace.current}');
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Có lỗi xảy ra')),
                     );
                   }
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Có lỗi xảy ra')),
-                  );
                 }
-              }
-            },
-            child: const Text('Lưu'),
+              },
+              child: const Text('Thêm'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showEditUserDialog(User user) {
+    _usernameController.text = user.username;
+    _emailController.text = user.email;
+    _phoneController.text = user.phone;
+    _addressController.text = user.address;
+    String? localSelectedImagePath = null;
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) => AlertDialog(
+          title: const Text('Sửa thông tin người dùng'),
+          content: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      final ImagePicker picker = ImagePicker();
+                      final XFile? image = await picker.pickImage(
+                        source: ImageSource.gallery,
+                      );
+                      if (image != null) {
+                        final mimeType = lookupMimeType(image.path);
+                        if (mimeType?.startsWith('image/') ?? false) {
+                          setState(() {
+                            localSelectedImagePath = image.path;
+                          });
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content:
+                                  Text('Vui lòng chọn một tệp ảnh hợp lệ.'),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: localSelectedImagePath != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Image.file(
+                                File(localSelectedImagePath!),
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Image.network(
+                                user.avatarUrl,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(Icons.person),
+                              ),
+                            ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(labelText: 'Username'),
+                    validator: (value) =>
+                        value?.isEmpty ?? true ? 'Required' : null,
+                  ),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(labelText: 'Email'),
+                    validator: (value) =>
+                        value?.isEmpty ?? true ? 'Required' : null,
+                  ),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
+                      labelText: 'Password',
+                      helperText: 'Leave blank to keep current password',
+                    ),
+                    obscureText: true,
+                  ),
+                  TextFormField(
+                    controller: _phoneController,
+                    decoration: const InputDecoration(labelText: 'Phone'),
+                    validator: (value) =>
+                        value?.isEmpty ?? true ? 'Required' : null,
+                  ),
+                  TextFormField(
+                    controller: _addressController,
+                    decoration: const InputDecoration(labelText: 'Address'),
+                    validator: (value) =>
+                        value?.isEmpty ?? true ? 'Required' : null,
+                  ),
+                ],
+              ),
+            ),
           ),
-        ],
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Hủy'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (_formKey.currentState?.validate() ?? false) {
+                  try {
+                    var request = http.MultipartRequest(
+                      'PUT',
+                      Uri.parse(
+                          'https://be-android-project.onrender.com/api/auth/users/${user.id}'),
+                    );
+
+                    request.headers
+                        .addAll({'Content-Type': 'multipart/form-data'});
+
+                    request.fields['username'] = _usernameController.text;
+                    request.fields['email'] = _emailController.text;
+                    request.fields['phone'] = _phoneController.text;
+                    request.fields['address'] = _addressController.text;
+
+                    if (_passwordController.text.isNotEmpty) {
+                      request.fields['password'] = _passwordController.text;
+                    }
+
+                    if (localSelectedImagePath != null) {
+                      final mimeType = lookupMimeType(localSelectedImagePath!);
+                      if (mimeType != null) {
+                        final mimeParts = mimeType.split('/');
+                        request.files.add(await http.MultipartFile.fromPath(
+                          'avatar',
+                          localSelectedImagePath!,
+                          contentType: MediaType(mimeParts[0], mimeParts[1]),
+                        ));
+                      }
+                    }
+
+                    final response = await request.send();
+                    if (response.statusCode == 200) {
+                      Navigator.pop(context);
+                      fetchUsers();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Cập nhật thành công')),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Có lỗi xảy ra')),
+                      );
+                    }
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Có lỗi xảy ra')),
+                    );
+                  }
+                }
+              },
+              child: const Text('Lưu'),
+            ),
+          ],
+        ),
       ),
     );
   }
